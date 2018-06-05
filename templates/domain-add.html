@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block title %}
+域名编辑页
+{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="/static/js/bootstrap-datetimepicker.min.css" />
+    <script src="/static/js/moment-with-locales.min.js" ></script>
+    <script src="/static/js/bootstrap-datetimepicker.min.js" ></script>
+{% endblock %}
+{% block maincontent %}
+    {% if err %}
+        <div class="notice_tips">{{ err }}</div>
+        {% block extra_js %}
+        <script type="text/javascript">
+            $(document).ready(function(){
+                setTimeout(function () {
+                    $('.notice_tips').slideUp('slow');
+                },1500);
+            });
+        </script>
+        <script>
+            $(function () {
+                $('#date_input').datetimepicker({
+                format: 'YYYY-MM-DD',
+                locale: moment.locale('zh-cn')
+            });
+            });
+        </script>
+    {% endblock %}
+    {% endif %}
+    <div class="title">所在位置/域名添加</div>
+    <div class="detail_wrapper">
+    <form action="{% url 'add-domain' %}" method="post" >
+        <!-- 资产详情页 -->
+        <div class="left">
+            <ul class="list-unstyled">
+                <li><span class="assets_title">域名:</span>
+                    <input type="text" placeholder="请输入域名" name="d_name" value="{{ adddomain_form.d_name.value }}" /><br/>
+                    {% if error.d_name %}<span class="error_tips">{{ error.d_name.0 }}</span>{% endif %}
+                </li>
+                <li><span class="assets_title">解析地址:</span>
+                    <input type="text" placeholder="请输入解析地址" name="resolution" value="{{ adddomain_form.resolution.value }}" /><br/>
+                    {% if error.resolution %}<span class="error_tips">{{ error.resolution.0 }}</span>{% endif %}
+                </li>
+                <li><span class="assets_title">所属账号:</span>
+                    <select name="account">
+                        {% for account in accounts %}
+                            <option value="{{ account.id }}" {% if account.id|escape == adddomain_form.account.value %}selected{% endif %} >{{ account.name }}--{{ account.get_belong_to_display }}</option>
+                        {% endfor %}
+                    </select>
+                </li>
+                <li><span class="assets_title">价格:</span>
+                    <input type="text" placeholder="请输入价格" name="price" value="{{ adddomain_form.price.value }}" /><br/>
+                    {% if error.price %}<span class="error_tips">{{ error.price.0 }}</span>{% endif %}
+                </li>
+                <li><span class="assets_title">到期时间:</span>
+                    <div class='col-sm-4' style="float: right;margin-right: -15px;">
+                    <input type="text" placeholder="请选择日期" name="date" id="date_input" value="{{ adddomain_form.date.value }}" /><br/>
+                    </div><br/>
+                    {% if error.date %}<span class="error_tips">{{ error.date.0 }}</span>{% endif %}
+                </li>
+                <li><span class="assets_title">备注:</span>
+                    <textarea name="info" >{{ adddomain_form.info.value }}</textarea>
+                </li>
+            </ul>
+        </div>
+        <input id="edit_btn" value="保存" type="submit"  />
+        <a href="{% url 'domain' %}"><div class="return_btn" >返回</div></a>
+        {% csrf_token %}
+    </form>
+    </div>
+{% endblock %}

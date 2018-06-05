@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block title %}错误{% endblock %}
+{% block maincontent %}
+    <div class="title">所在位置/错误页</div>
+    <div class="error_wrapper">
+        别瞎点！<a href="{% url 'server' %}" onClick="javascript :history.back(-1);">返回首页</a>
+    </div>
+{% endblock %}

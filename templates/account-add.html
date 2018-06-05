@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %}
+服务器编辑页
+{% endblock %}
+{% block maincontent %}
+    {% if err %}
+        <div class="notice_tips">{{ err }}</div>
+        {% block extra_js %}
+        <script type="text/javascript">
+            $(document).ready(function(){
+                setTimeout(function () {
+                    $('.notice_tips').slideUp('slow');
+                },1500);
+            })
+        </script>
+    {% endblock %}
+    {% endif %}
+    <div class="title">所在位置/账号添加</div>
+    <div class="detail_wrapper">
+    <form action="{% url 'add-account' %}" method="post" >
+        <!-- 资产详情页 -->
+        <div class="left">
+            <ul class="list-unstyled">
+                <li><span class="assets_title">账号:</span>
+                    <input type="text" placeholder="请输入账号" name="name" value="{{ addaccount_form.name.value }}" /><br/>
+                    {% if error.name %}<span class="error_tips">{{ error.name.0 }}</span>{% endif %}
+                </li>
+                <li><span class="assets_title">密码:</span>
+                    <input type="text" placeholder="请输入密码" name="password" value="{{ addaccount_form.password.value }}" /><br/>
+                    {% if error.password %}<span class="error_tips">{{ error.password.0 }}</span>{% endif %}
+                </li>
+                <li><span class="assets_title">登录地址:</span>
+                    <input type="text" placeholder="请输入登录地址" name="url" value="{{ addaccount_form.url.value }}" /><br/>
+                    {% if error.url %}<span class="error_tips">{{ error.url.0 }}</span>{% endif %}
+                </li>
+                <li><span class="assets_title">账号类别:</span>
+                    <select name="account_type">
+                        {% for type in account_choices %}
+                            <option value="{{ type.0 }}" {% if type.0 == addaccount_form.account_type.value %}selected{% endif %}>{{ type.1 }}</option>
+                        {% endfor %}
+                    </select>
+                </li>
+                <li><span class="assets_title">备注:</span>
+                    <textarea name="info" >{{ addaccount_form.info.value }}</textarea>
+                </li>
+            </ul>
+        </div>
+        <input id="edit_btn" value="保存" type="submit"  />
+        <a href="{% url 'account' %}"><div class="return_btn" >返回</div></a>
+        {% csrf_token %}
+    </form>
+    </div>
+{% endblock %}

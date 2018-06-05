@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>登录</title>
+	<link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/main.css">
+	<script type="text/javascript" src="/static/js/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+</head>
+<body style="background: #f7f7f7">
+<!-- 内容区 -->
+	<div class="loginewrapper_div">
+		<span>同道<br />运维管理平台</span>
+        <form action="{% url 'login' %}" method="post" >
+            <div class="login_div">
+                用户名：<input type="text" name="username" value="{{ login_form.username.value }}" placeholder="请输入用户名" /> <br />
+                密&nbsp;&nbsp;&nbsp;码：<input type="password" name="password" value="{{ login_form.password.value }}" placeholder="请输入密码" /> <br />
+                {% if err %}<b>{{ err }}</b>{% endif %}
+                <input class="loginbtn" type="submit" value="登录" />
+                <input class="loginbtn can" disabled="hidden" type="button" value="注册" />
+            </div>
+            {% csrf_token %}
+        </form>
+	</div>
+</body>
+</html>

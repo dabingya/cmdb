@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% block title %}
+服务器首页
+{% endblock %}
+{% block maincontent %}
+    {% if tips %}
+        <div class="notice_tips">{{ tips }}</div>
+        {% block extra_js %}
+            <script type="text/javascript">
+                $(document).ready(function(){
+                    t = setTimeout(function () {
+                        $('.notice_tips').slideUp('slow');
+
+                    },1500);
+                    //location.href = "/server/";
+                    //clearTimeout(t);
+                })
+            </script>
+        {% endblock %}
+    {% endif %}
+    <div class="title">所在位置/服务器首页</div>
+    <div class="search_wrapper">
+        <!-- 搜索框 -->
+        <form action="{% url 'server' %}" method="get">
+            <div class="search">
+                <select name="category">
+                    <option value="0" >所有业务线</option>
+                    {% for t in team %}
+                        <option {% ifequal category t.id|escape  %}selected{% endifequal %} value="{{ t.id }}">{{ t.name }}</option>
+                    {% endfor %}
+                </select>
+                <input type="text" name="keyword" {% ifnotequal keyword "" %}value="{{ keyword }}"{% endifnotequal %} placeholder="请输入搜索关键字" />
+                <input type="submit" id="searchbtn" value="搜 索" />
+                <a href="{% url 'add-server' %}"><input type="button" id="addbtn" value="添 加" /></a>
+            </div>
+        </form>
+    </div>
+    <!-- 数据表格 -->
+    <div class="table_wrapper">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr><td width="50px">序号</td><td>主机名</td><td>连接IP</td><td>端口</td><td>主机IP</td><td>所属部门</td><td>所属环境</td><td width="120px;">操作</td></tr>
+            </thead>
+            <tbody>
+                {% for s in all_server.object_list %}
+                <tr><td>{{ forloop.counter }}</td><td>{{ s.hostname }}</td><td>{{ s.remote_ip }}</td><td>{{ s.port }}</td>
+                <td>{{ s.self_ip }}</td><td>{{ s.team }}</td><td>{{ s.get_env_status_display }}</td>
+                <td><a href="{% url 'server-detail' s.id %}">查看</a> | <a href="{% url 'server-edit' s.id %}">编辑</a></td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <input type="button" id="update_data" class="btn btn-success" value="更新数据" />
+    &nbsp;&nbsp;&nbsp;&nbsp;共计 <b style="color: #d9534f">{{ count }}</b> 条数据。
+    <!-- 页码 -->
+    <div class="Page navigation mypage">
+    <ul class="pagination">
+        {% if all_server.has_previous %}
+            <li><a href="?{{ all_server.previous_page_number.querystring }}">&lsaquo;&lsaquo;</a></li>
+        {% else %}
+            <li class="disabled"><a href="#">&lsaquo;&lsaquo;</a></li>
+        {% endif %}
+        {% for page in all_server.pages %}
+            {% if page %}
+                {% ifequal page all_server.number %}
+                    <li class="active"><a href="?{{ page.querystring }}">{{ page  }}</a></li>
+                {% else %}
+                    <li><a href="?{{ page.querystring }}">{{ page  }}</a></li>
+                {% endifequal %}
+            {% else %}
+                <li><a href="#" class="none">...</a></li>
+            {% endif %}
+        {% endfor %}
+        {% if all_server.has_next %}
+            <li><a href="?{{ all_server.next_page_number.querystring }}">&rsaquo;&rsaquo;</a></li>
+        {% else %}
+            <li class="disabled"><a href="#">&rsaquo;&rsaquo;</a></li>
+        {% endif %}
+    </ul>
+    </div>
+    <script>
+    $('#update_data').on('click',function () {
+        $('#update_data').val("更新中...");
+        $.ajax({
+            url: '{% url "update_data" %}',
+            type: "GET",
+            success: function (arg) {
+                $('#update_data').val(arg);
+            }
+        })
+    })
+    </script>
+{% endblock %}

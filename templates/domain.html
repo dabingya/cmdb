@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block title %}
+账号首页
+{% endblock %}
+{% block maincontent %}
+    {% if tips %}
+        <div class="notice_tips">{{ tips }}</div>
+        {% block extra_js %}
+            <script type="text/javascript">
+                $(document).ready(function(){
+                    t = setTimeout(function () {
+                        $('.notice_tips').slideUp('slow');
+
+                    },1500);
+                    //location.href = "/server/";
+                    //clearTimeout(t);
+                })
+            </script>
+        {% endblock %}
+    {% endif %}
+    <div class="title">所在位置/域名首页</div>
+			<div class="search_wrapper">
+            <!-- 搜索框 -->
+            <form action="{% url 'domain' %}" method="get">
+				<div class="search">
+					<input type="text" name="keyword" {% ifnotequal keyword "all" %}value="{{ keyword }}"{% endifnotequal %} placeholder="请输入搜索关键字" />
+                    <input type="submit" id="searchbtn" value="搜 索" />
+					<a href="{% url 'add-domain' %}"><input type="button" id="addbtn" value="添 加" /></a>
+				</div>
+            </form>
+			</div>
+			<!-- 数据表格 -->
+			<div class="table_wrapper">
+				<table class="table table-bordered table-hover">
+					<thead>
+						<tr><td width="50px">序号</td><td>域名</td><td>解析IP</td><td>所属账号</td><td>到期时间</td><td>价格</td><td>备注</td><td width="120px;">操作</td></tr>
+					</thead>
+					<tbody>
+                    {% for d in domains.object_list %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td><td>{{ d.name }}</td><td>{{ d.resolution }}</td><td>{{ d.account.name }} <a href="#">查</a></td>
+                            <td>{{ d.datetime }}</td><td>{{ d.price }}</td><td>{{ d.info }}</td>
+                            <td><a href="{% url 'domain-edit' d.id %}">编辑</a></td>
+                        </tr>
+                    {% endfor %}
+
+					</tbody>
+				</table>
+			</div>
+                共计 <b style="color: #d9534f">{{ count }}</b> 条数据。
+			<!-- 页码 -->
+			<div class="Page navigation mypage">
+                <ul class="pagination">
+                    {% if domains.has_previous %}
+                        <li><a href="?{{ domains.previous_page_number.querystring }}">&lsaquo;&lsaquo;</a></li>
+                    {% else %}
+                        <li class="disabled"><a href="#">&lsaquo;&lsaquo;</a></li>
+                    {% endif %}
+                    {% for page in domains.pages %}
+                        {% if page %}
+                            {% ifequal page domains.number %}
+                                <li class="active"><a href="?{{ page.querystring }}">{{ page  }}</a></li>
+                            {% else %}
+                                <li><a href="?{{ page.querystring }}">{{ page  }}</a></li>
+                            {% endifequal %}
+                        {% else %}
+                            <li><a href="#" class="none">...</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if domains.has_next %}
+                        <li><a href="?{{ domains.next_page_number.querystring }}">&rsaquo;&rsaquo;</a></li>
+                    {% else %}
+                        <li class="disabled"><a href="#">&rsaquo;&rsaquo;</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+		</div>
+{% endblock %}

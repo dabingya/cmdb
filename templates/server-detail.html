@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %}
+服务器详情页
+{% endblock %}
+{% block maincontent %}
+    <div class="title">所在位置/服务器详情</div>
+    <div class="detail_wrapper">
+				<!-- 资产详情页 -->
+					<div class="left">
+						<ul class="list-unstyled">
+							<li><span class="assets_title">主机名:</span>{{ server.hostname }}</li>
+							<li><span class="assets_title">远程ip:</span>{{ server.remote_ip }}</li>
+							<li><span class="assets_title">端口:</span>{{ server.port }}</li>
+							<li><span class="assets_title">所属机房:</span>{{ server.idc }}</li>
+							<li><span class="assets_title">所属业务:</span>{{ server.team }}</li>
+							<li><span class="assets_title">所属账号:</span>{{ server.account }}</li>
+							<li><span class="assets_title">连接用户:</span>{{ server.username }}</li>
+							<li><span class="assets_title">连接密码:</span>{{ server.password }}</li>
+							<li><span class="assets_title">价格:</span>{{ server.price }}元</li>
+							<li><span class="assets_title">所属环境:</span>{{ server.get_env_status_display }}</li>
+							<li><span class="assets_title">到期时间:</span>{{ server.get_deadtime_display }}</li>
+							<li><span class="assets_title">备注:</span>{{ server.info }}</li>
+						</ul>
+					</div>
+					<div class="right">
+						<ul class="list-unstyled">
+							<li><span class="assets_title">更新状态:</span>{{ server.get_update_status_display }}</li>
+							<li><span class="assets_title">主机IP:</span>{{ server.self_ip }}</li>
+							<li><span class="assets_title">系统版本:</span>{{ server.assets.release }}</li>
+							<li><span class="assets_title">内核信息:</span>{{ server.assets.kernel_version }}</li>
+							<li><span class="assets_title">CPU型号:</span>{{ server.assets.cpu_type }}</li>
+							<li><span class="assets_title">CPU个数:</span>{{ server.assets.cpu_nums }}</li>
+							<li><span class="assets_title">内存:</span>{{ server.assets.mem }}</li>
+							<li><span class="assets_title">SWAP:</span>{{ server.assets.swap }}</li>
+                            {% for disk in server.disk_info.all %}
+							    <li><span class="assets_title">硬盘:</span>{{ disk.name }} -- {{ disk.size }}</li>
+                            {% endfor %}
+						</ul>
+					</div>
+					<a href="{% url 'server-edit' server.id %}"><div class="return_btn edit_btn">编辑</div></a>
+                    <a href="{% url 'server' %}"><div class="return_btn" >返回</div></a>
+				<div class="secert_info"><span class="assets_title" style="float: left;">密码信息:</span>
+					<div class="secert_info_box">&nbsp;{{ server.info_sercret }}
+					</div>
+				</div>
+
+			</div>
+{% endblock %}

@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% block title %}
+服务器编辑页
+{% endblock %}
+{% block maincontent %}
+    {% if err %}
+        <div class="notice_tips">{{ err }}</div>
+        {% block extra_js %}
+        <script type="text/javascript">
+            $(document).ready(function(){
+                setTimeout(function () {
+                    $('.notice_tips').slideUp('slow');
+                },1500);
+            })
+        </script>
+    {% endblock %}
+    {% endif %}
+    <div class="title">所在位置/服务器编辑</div>
+    <div class="detail_wrapper">
+    <form action="{% url 'add-server' %}" method="post" >
+        <!-- 资产详情页 -->
+        <div class="left">
+            <ul class="list-unstyled">
+                <li><span class="assets_title">主机名:</span>
+                    <input type="text" placeholder="请输入主机名" name="hostname" value="{{ addserver_form.hostname.value }}" /><br/>
+                    {% if error.hostname %}<span class="error_tips">{{ error.hostname.0 }}</span>{% endif %}
+                </li>
+                <li><span class="assets_title">远程ip:</span>
+                    <input type="text" placeholder="请输入连接ip" name="remote_ip" value="{{ addserver_form.remote_ip.value }}" /><br/>
+                    {% if error.remote_ip %}<span class="error_tips">{{ error.remote_ip.0 }}</span>{% endif %}
+                </li>
+                <li><span class="assets_title">端口:</span>
+                    <input type="text" placeholder="请输入端口" name="port" value="{{ addserver_form.port.value }}" /><br/>
+                    {% if error.port %}<span class="error_tips">{{ error.port.0 }}</span>{% endif %}
+                </li>
+                <li><span class="assets_title">所属机房:</span>
+                    <select name="idc">
+                        {% for idc in idcs %}
+                            <option value="{{ idc.id }}" {% if idc.id|escape == addserver_form.idc.value %}selected{% endif %}>{{ idc.name }}</option>
+                        {% endfor %}
+                    </select>
+                </li>
+                <li><span class="assets_title">所属业务:</span>
+                    <select name="team">
+                        {% for team in teams %}
+                            <option value="{{ team.id }}" {% if team.id|escape == addserver_form.team.value %}selected{% endif %}>{{ team.name }}</option>
+                        {% endfor %}
+                    </select>
+                </li>
+                <li><span class="assets_title">所属账号:</span>
+                    <select name="account">
+                        <option value="0">没有所属账号</option>
+                        {% for account in accounts %}
+                            <option value="{{ account.id }}" {% if account.id|escape == addserver_form.account.value %}selected{% endif %}>{{ account.name }}</option>
+                        {% endfor %}
+                    </select>
+                </li>
+                <li><span class="assets_title">连接用户:</span>
+                    <input type="text" placeholder="请输入连接用户名" name="username" value="{{ addserver_form.username.value }}" /><br/>
+                    {% if error.username %}<span class="error_tips">{{ error.username.0 }}</span>{% endif %}
+                </li>
+                <li><span class="assets_title">连接密码:</span>
+                    <input type="text" placeholder="请输入连接密码" name="password" value="{{ addserver_form.password.value }}" /><br/>
+                    {% if error.password %}<span class="error_tips">{{ error.password.0 }}</span>{% endif %}
+                </li>
+                <li><span class="assets_title">价格:</span>
+                    <input type="text" placeholder="请输入价格" name="price" value="{{ addserver_form.price.value }}" /><br/>
+                    {% if error.price %}<span class="error_tips">{{ error.price.0 }}</span>{% endif %}
+                </li>
+                <li><span class="assets_title">所属环境:</span>
+                    <select name="env">
+                        {% for env in envs %}
+                            <option value="{{ env.0 }}" {% if env.0 == addserver_form.env.value %}selected{% endif %}>{{ env.1 }}</option>
+                        {% endfor %}
+                    </select>
+                </li>
+                <li><span class="assets_title">到期(每月):</span>
+                    <select name="deadtime">
+                        {% for day in days %}
+                            <option value="{{ day.1 }}" {% if day.0 == addserver_form.deadtime.value %}selected{% endif %}>{{ day.1 }}</option>
+                        {% endfor %}
+                    </select>
+                </li>
+                <li><span class="assets_title">备注:</span>
+                    <input type="text" placeholder="请输入备注" name="info" value="{{ addserver_form.info.value }}" />
+                </li>
+                <li><span class="assets_title">密码信息:</span>
+                    <textarea name="info_secret" >{{ addserver_form.info_secret.value }}</textarea>
+                </li>
+            </ul>
+        </div>
+        <input id="edit_btn" value="保存" type="submit"  />
+        <a href="{% url 'server' %}"><div class="return_btn" >返回</div></a>
+        {% csrf_token %}
+    </form>
+    </div>
+{% endblock %}

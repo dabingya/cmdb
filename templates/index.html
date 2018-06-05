@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>首页</title>
+	<link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/main.css">
+	<script type="text/javascript" src="/static/js/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+	<style type="text/css">
+	html {
+		min-width: 600px;
+	}
+	</style>
+</head>
+<body style="background: #f7f7f7">
+<!-- 内容区 -->
+	<div class="index_header">
+		同道运维平台
+		<span>
+            <p style="color: chartreuse; display: inline;">{{ request.user }} </p>,欢迎你 | <a style="color: #fff;" href="{% url 'lgout' %}">退出</a>
+		</span>
+	</div>
+	<div class="index_content">
+		<a href="{% url 'server' %}" >
+			<div class="cbox" style="background: #3ac281">
+				<img src="/static/img/zichan.png" />
+				<span>资产管理<br />CMDB</span>
+			</div>
+		</a>
+		<a href="">
+			<div class="cbox" style="background: #32c1b9">
+				<img src="/static/img/jumpserver.png" />
+				<span>跳板机<br />JUMPSERVER</span>
+			</div>
+		</a>
+		<a href="http://182.92.228.126:8888/zabbix.php?action=dashboard.view" target="_blank">
+			<div class="cbox" style="background: #f36a6a">
+				<img src="/static/img/zabbix.png" />
+				<span>监控<br />ZABBIX</span>
+			</div>
+		</a>
+		<a href="">
+			<div class="cbox" style="background: #f0773f">
+				<img src="/static/img/jiankong.png" />
+				<span>页面监控<br />MONITOR</span>
+			</div>
+		</a>
+		<a href="">
+			<div class="cbox" style="background: #d1b993">
+				<img src="/static/img/peizhi.png" />
+				<span>服务配置<br />SETTING</span>
+			</div>
+		</a>
+		<a href="">
+			<div class="cbox" style="background: #4caeda">
+				<img src="/static/img/proxmox.png" />
+				<span>内网服务器<br />PROXMOX</span>
+			</div>
+		</a>
+	</div>
+</body>
+</html>

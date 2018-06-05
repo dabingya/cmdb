@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}
+域名编辑页
+{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="/static/js/bootstrap-datetimepicker.min.css" />
+    <script src="/static/js/moment-with-locales.min.js" ></script>
+    <script src="/static/js/bootstrap-datetimepicker.min.js" ></script>
+{% endblock %}
+{% block maincontent %}
+    {% if err %}
+        <div class="notice_tips">{{ err }}</div>
+        {% block extra_js %}
+        <script type="text/javascript">
+            $(document).ready(function(){
+                setTimeout(function () {
+                    $('.notice_tips').slideUp('slow');
+                },1500);
+            });
+        </script>
+    {% endblock %}
+    {% endif %}
+    <div class="title">所在位置/联系人添加</div>
+    <div class="detail_wrapper">
+    <form action="{% url 'add-connect' %}" method="post" >
+        <!-- 资产详情页 -->
+        <div class="left">
+            <ul class="list-unstyled">
+                <li><span class="assets_title">姓名:</span>
+                    <input type="text" placeholder="请输入联系人姓名" name="username" value="{{ addconnect_form.username.value }}" /><br/>
+                    {% if error.username %}<span class="error_tips">{{ error.username.0 }}</span>{% endif %}
+                </li>
+                <li><span class="assets_title">手机:</span>
+                    <input type="text" placeholder="请输入手机号码" name="mobile" value="{{ addconnect_form.mobile.value }}" /><br/>
+                    {% if error.mobile %}<span class="error_tips">{{ error.mobile.0 }}</span>{% endif %}
+                </li>
+                <li><span class="assets_title">固定电话:</span>
+                    <input type="text" placeholder="请输入固定电话" name="tel" value="{{ addconnect_form.tel.value }}" /><br/>
+                    {% if error.tel %}<span class="error_tips">{{ error.tel.0 }}</span>{% endif %}
+                </li>
+                <li><span class="assets_title">备注:</span>
+                    <textarea name="info" >{{ addconnect_form.info.value }}</textarea>
+                </li>
+            </ul>
+        </div>
+        <input id="edit_btn" value="保存" type="submit"  />
+        <a href="{% url 'connect' %}"><div class="return_btn" >返回</div></a>
+        {% csrf_token %}
+    </form>
+    </div>
+{% endblock %}
