@@ -77,22 +77,13 @@ WSGI_APPLICATION = 'new_cmdb.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': "new_cmdb",
-#         'USER': 'dabing',
-#         'PASSWORD': 'Xxhxtdgs123',
-#         'HOST': '47.104.129.40',
-#     }
-# }
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': "new_cmdb",
         'USER': 'new_cmdb',
-        'PASSWORD': 'U2&3btz)7bjf',
-        'HOST': '192.168.15.150',
+        'PASSWORD': '#U2&3btz)7bjf',
+        'HOST': '*',
     }
 }
 
